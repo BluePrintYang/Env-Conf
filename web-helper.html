@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>URI Encode/Decode and JSON Beautify</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $(function () {
+      $('#submit-btn').click(function () {
+        var selectedDateTime = new Date($('#datetime-picker').val()).getTime();
+        $('#10-digit-timestamp').text(selectedDateTime.toString().substr(0, 10));
+        $('#13-digit-timestamp').text(selectedDateTime.toString());
+      });
+    });
+  </script>
+  <script>
+    function getCurrentTimestamps() {
+      var date = new Date();
+      var timestamp1 = Math.floor(date.getTime() / 1000);
+      var timestamp2 = date.getTime();
+      var nextHourDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 0, 0);
+      document.getElementById("timestamp1").innerHTML = timestamp1;
+      document.getElementById("timestamp2").innerHTML = timestamp2;
+      document.getElementById("nextHour1").innerHTML = nextHourDate.getTime() / 1000;
+      document.getElementById("nextHour2").innerHTML = nextHourDate.getTime();
+      setTimeout(getCurrentTimestamps, 1000);
+    }
+    function copyById(id) {
+      var copyText = document.getElementById(id);
+      var range = document.createRange();
+      range.selectNode(copyText);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      console.log("Copied to clipboard!", copyText.innerHTML);
+    }
+  </script>
+  <script>
+    function uriEncode() {
+      const inputField = document.getElementById("uriInput");
+      const outputField = document.getElementById("uriOutput");
+      const str = inputField.value.trim();
+
+      const encodedStr = encodeURIComponent(str);
+      outputField.value = encodedStr;
+    }
+
+    function uriDecode() {
+      const inputField = document.getElementById("uriInput");
+      const outputField = document.getElementById("uriOutput");
+      const str = inputField.value.trim();
+
+      const decodedStr = decodeURIComponent(str);
+      outputField.value = decodedStr;
+    }
+
+    function beautifyJson() {
+      const inputField = document.getElementById("jsonInput");
+      const outputField = document.getElementById("jsonOutput");
+      const jsonStr = inputField.value.trim();
+
+      try {
+        const jsonObj = JSON.parse(jsonStr);
+        const formattedJsonStr = JSON.stringify(jsonObj, null, 2);
+        outputField.value = formattedJsonStr;
+      } catch (error) {
+        console.error('Error beautifying JSON:', error);
+        outputField.value = "Invalid JSON string";
+      }
+    }
+
+    function copy(id) {
+      id.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      console.log("复制成功！", id.value);
+    }
+  </script>
+</head>
+
+<body onload="getCurrentTimestamps()">
+  <h1>URI Encode/Decode and JSON Beautify</h1>
+  <p>Enter a string below and click the "URI Encode" or "URI Decode" button to convert it:</p>
+  <label for="uriInput"></label><textarea id="uriInput" rows="5" cols="50">{
+    "alias": "严厉的水箭龟",
+    "avatar": "https://res.campushoy.com/common-resource/randomavatar/boy3.png",
+    "birthday": "",
+    "gender": "FEMALE",
+    "grade": "2022",
+    "groupIds": [
+        "ALL",
+        "LOGIN",
+        "STUDENT-1022014499875042",
+        "200002",
+        "ALL-1022014499875042"
+    ],
+    "name": "测试139",
+    "openId": "139",
+    "pwid": "be23d9a3-c9a1-4973-97eb-76999aea9d54",
+    "status": "ENABLE",
+    "tenantId": "1022014499875042",
+    "userId": "2d5ae932-e9db-4d63-b653-346383630b9b",
+    "userType": "STUDENT"
+}</textarea></label>
+  <button onclick="copy(uriInput)">复制</button>
+  <br>
+  <button onclick="uriEncode()">URI Encode</button>
+  <button onclick="uriDecode()">URI Decode</button>
+  <br>
+  <p>Result:</p>
+  <label for="uriOutput"></label><textarea id="uriOutput" rows="5" cols="50">%7B%0A%20%20%20%20%22alias%22%3A%20%22%E4%B8%A5%E5%8E%89%E7%9A%84%E6%B0%B4%E7%AE%AD%E9%BE%9F%22%2C%0A%20%20%20%20%22avatar%22%3A%20%22https%3A%2F%2Fres.campushoy.com%2Fcommon-resource%2Frandomavatar%2Fboy3.png%22%2C%0A%20%20%20%20%22birthday%22%3A%20%22%22%2C%0A%20%20%20%20%22gender%22%3A%20%22FEMALE%22%2C%0A%20%20%20%20%22grade%22%3A%20%222022%22%2C%0A%20%20%20%20%22groupIds%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%22ALL%22%2C%0A%20%20%20%20%20%20%20%20%22LOGIN%22%2C%0A%20%20%20%20%20%20%20%20%22STUDENT-1022014499875042%22%2C%0A%20%20%20%20%20%20%20%20%22200002%22%2C%0A%20%20%20%20%20%20%20%20%22ALL-1022014499875042%22%0A%20%20%20%20%5D%2C%0A%20%20%20%20%22name%22%3A%20%22%E6%B5%8B%E8%AF%95139%22%2C%0A%20%20%20%20%22openId%22%3A%20%22139%22%2C%0A%20%20%20%20%22pwid%22%3A%20%22be23d9a3-c9a1-4973-97eb-76999aea9d54%22%2C%0A%20%20%20%20%22status%22%3A%20%22ENABLE%22%2C%0A%20%20%20%20%22tenantId%22%3A%20%221022014499875042%22%2C%0A%20%20%20%20%22userId%22%3A%20%222d5ae932-e9db-4d63-b653-346383630b9b%22%2C%0A%20%20%20%20%22userType%22%3A%20%22STUDENT%22%0A%7D
+  </textarea></label>
+  <button onclick="copy(uriOutput)">复制</button>
+  <br>
+  <p>Enter a JSON string below and click the "Beautify JSON" button to format it:</p>
+  <textarea id="jsonInput" rows="10" cols="50"></textarea>
+  <br>
+  <button onclick="beautifyJson()">Beautify JSON</button>
+  <br>
+  <p>Formatted JSON:</p>
+  <textarea id="jsonOutput" rows="10" cols="50"></textarea>
+
+  <h1>Current Timestamps</h1>
+  <p>Timestamp 1 (Unix, 10 digits): <span id="timestamp1"></span>
+    <button onclick="copyById('timestamp1')">Copy</button>
+    <span id="copy1" style="position: absolute; left: -9999px;"></span>
+  </p>
+  <p>Timestamp 2 (Unix, 13 digits): <span id="timestamp2"></span>
+    <button onclick="copyById('timestamp2')">Copy</button>
+    <span id="copy2" style="position: absolute; left: -9999px;"></span>
+  </p>
+  <p>Next Hour Timestamp (Unix, 10 digits): <span id="nextHour1"></span>
+    <button onclick="copyById('nextHour1')">Copy</button>
+    <span id="copy3" style="position: absolute; left: -9999px;"></span>
+  </p>
+  <p>Next Hour Timestamp (Unix, 13 digits): <span id="nextHour2"></span>
+    <button onclick="copyById('nextHour2')">Copy</button>
+    <span id="copy4" style="position: absolute; left: -9999px;"></span>
+  </p>
+  <h1>Date Time Picker</h1>
+  <form>
+    <label for="datetime-picker">Select a date and time:</label>
+    <input type="datetime-local" id="datetime-picker" name="datetime-picker">
+    <br>
+    <button type="button" id="submit-btn">Submit</button>
+  </form>
+  <br>
+  <p>10-digit timestamp: <span id="10-digit-timestamp"></span><button
+      onclick="copyById('10-digit-timestamp')">Copy</button></p>
+  <p>13-digit timestamp: <span id="13-digit-timestamp"></span><button
+      onclick="copyById('13-digit-timestamp')">Copy</button></p>
+</body>
+
+</html>
