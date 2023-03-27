@@ -19,13 +19,30 @@
       var date = new Date();
       var timestamp1 = Math.floor(date.getTime() / 1000);
       var timestamp2 = date.getTime();
-      var nextHourDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 0, 0);
       document.getElementById("timestamp1").innerHTML = timestamp1;
       document.getElementById("timestamp2").innerHTML = timestamp2;
-      document.getElementById("nextHour1").innerHTML = nextHourDate.getTime() / 1000;
-      document.getElementById("nextHour2").innerHTML = nextHourDate.getTime();
+
       setTimeout(getCurrentTimestamps, 1000);
     }
+    function plusOne() {
+      if (document.getElementById("nextHour1").innerHTML === '') {
+        var date = new Date();
+        var nextHourDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 0, 0);
+        document.getElementById("nextHour2").innerHTML = nextHourDate.getTime();
+        document.getElementById("nextHour1").innerHTML = nextHourDate.getTime() / 1000;
+      } else {
+        document.getElementById("nextHour1").innerHTML = parseInt(document.getElementById("nextHour1").innerHTML) + 3600;
+        document.getElementById("nextHour2").innerHTML = parseInt(document.getElementById("nextHour2").innerHTML) + 3600 * 1000;
+      }
+    }
+    function formatTimestamp() {
+        let timestampInput = document.getElementById("timestamp-input").value;
+        let timestamp = parseInt(timestampInput);
+        if (timestamp < 10_000_000_000) timestamp *= 1000;
+        const date = new Date(timestamp + 8 * 3600 * 1000);
+        const formattedDate = date.toISOString().replace("T", " ").replace(/\.\d{3}Z/, "");
+        document.getElementById("formatted-timestamp").innerHTML = formattedDate;
+      }
     function copyById(id) {
       var copyText = document.getElementById(id);
       var range = document.createRange();
@@ -132,6 +149,7 @@
   <p>Next Hour Timestamp (Unix, 10 digits): <span id="nextHour1"></span>
     <button onclick="copyById('nextHour1')">Copy</button>
     <span id="copy3" style="position: absolute; left: -9999px;"></span>
+    <button onclick="plusOne()">+1</button>
   </p>
   <p>Next Hour Timestamp (Unix, 13 digits): <span id="nextHour2"></span>
     <button onclick="copyById('nextHour2')">Copy</button>
@@ -149,6 +167,11 @@
       onclick="copyById('10-digit-timestamp')">Copy</button></p>
   <p>13-digit timestamp: <span id="13-digit-timestamp"></span><button
       onclick="copyById('13-digit-timestamp')">Copy</button></p>
+  <h1>Timestamp Formatting</h1>
+  <p>Enter a 10-digit or 13-digit timestamp:</p>
+  <input type="text" id="timestamp-input">
+  <button onclick="formatTimestamp()">Format Timestamp</button>
+  <p id="formatted-timestamp"></p>
 </body>
 
 </html>
