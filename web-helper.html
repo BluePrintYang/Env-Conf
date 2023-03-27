@@ -20,8 +20,8 @@
       var timestamp1 = Math.floor(date.getTime() / 1000);
       var timestamp2 = date.getTime();
       document.getElementById("timestamp1").innerHTML = timestamp1;
+      document.getElementById("time1").innerHTML = date.toLocaleString();
       document.getElementById("timestamp2").innerHTML = timestamp2;
-
       setTimeout(getCurrentTimestamps, 1000);
     }
     function plusOne() {
@@ -30,9 +30,11 @@
         var nextHourDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 0, 0);
         document.getElementById("nextHour2").innerHTML = nextHourDate.getTime();
         document.getElementById("nextHour1").innerHTML = nextHourDate.getTime() / 1000;
+        document.getElementById("nextHourString1").innerHTML = nextHourDate.toLocaleString();
       } else {
         document.getElementById("nextHour1").innerHTML = parseInt(document.getElementById("nextHour1").innerHTML) + 3600;
         document.getElementById("nextHour2").innerHTML = parseInt(document.getElementById("nextHour2").innerHTML) + 3600 * 1000;
+        document.getElementById("nextHourString1").innerHTML = new Date(parseInt(document.getElementById("nextHour2").innerHTML)).toLocaleString();
       }
     }
     function formatTimestamp() {
@@ -138,22 +140,23 @@
   <textarea id="jsonOutput" rows="10" cols="50"></textarea>
 
   <h1>Current Timestamps</h1>
-  <p>Timestamp 1 (Unix, 10 digits): <span id="timestamp1"></span>
+  <p>Timestamp 1 (Unix, 10 digits): <span id="timestamp1"></span> 
     <button onclick="copyById('timestamp1')">Copy</button>
-    <span id="copy1" style="position: absolute; left: -9999px;"></span>
+    <span id="time1"></span>
   </p>
   <p>Timestamp 2 (Unix, 13 digits): <span id="timestamp2"></span>
     <button onclick="copyById('timestamp2')">Copy</button>
-    <span id="copy2" style="position: absolute; left: -9999px;"></span>
   </p>
-  <p>Next Hour Timestamp (Unix, 10 digits): <span id="nextHour1"></span>
-    <button onclick="copyById('nextHour1')">Copy</button>
-    <span id="copy3" style="position: absolute; left: -9999px;"></span>
+  <p>Next Hour Timestamp (Unix, 10 digits): 
     <button onclick="plusOne()">+1</button>
+    <button onclick="copyById('nextHour1')">Copy</button>
+    <span id="nextHour1"></span>
+    <span id="nextHourString1"></span>
   </p>
-  <p>Next Hour Timestamp (Unix, 13 digits): <span id="nextHour2"></span>
+  <p>Next Hour Timestamp (Unix, 13 digits): 
     <button onclick="copyById('nextHour2')">Copy</button>
-    <span id="copy4" style="position: absolute; left: -9999px;"></span>
+    <span id="nextHour2"></span>
+    <span id="nextHourString2"></span>
   </p>
   <h1>Date Time Picker</h1>
   <form>
