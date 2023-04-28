@@ -110,10 +110,24 @@
     }
 
     function removeSpaces() {
-			var input = document.getElementById("input").value;
-			input = input.replace(/\s+/g, '');
-			document.getElementById("output").innerHTML = input;
-		}
+      var input = document.getElementById("input").value;
+      input = input.replace(/\s+/g, '');
+      document.getElementById("output").innerHTML = input;
+    }
+
+    function daysBetween(dateInput) {
+      const today = new Date();
+      const selectedDate = new Date(dateInput);
+      const timeDifference = Math.abs(today - selectedDate);
+      const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      return daysDifference;
+    }
+
+    function calculateDays() {
+      const dateInput = document.getElementById("date-input").value;
+      const days = daysBetween(dateInput);
+      document.getElementById("days-diff").innerHTML = `The number of days between today and the selected date is: ${days}`;
+    }
   </script>
 </head>
 
@@ -204,6 +218,11 @@
       <input type="text" id="timestamp-input">
       <button onclick="formatTimestamp()">Format Timestamp</button>
       <p id="formatted-timestamp"></p>
+
+      <label for="date-input">Select a date:</label>
+      <input type="date" id="date-input">
+      <button onclick="calculateDays()">Calculate days</button>
+      <p id="days-diff"></p>
     </div>
   </div>
 </body>
