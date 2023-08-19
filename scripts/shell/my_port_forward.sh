@@ -2,8 +2,8 @@
 
 
 # Remote server and SFTP directory details
-remote_user="user"
-remote_host="host"
+remote_user="nuc22"
+remote_host="tinmrn-nuc"
 
 # Function to perform port forwarding
 # nuc 端口转发到本地
@@ -35,10 +35,31 @@ function perform_port_forwarding() {
     fi
 
     # Replace 'nuc22' with your remote user and 'tinmrn-nuc' with your remote hostname (example.com)
-    ssh -L ${local_port}:localhost:${remote_port} $remote_user@$remote_host
+    ssh -L ${local_port}:localhost:${remote_port} -fN $remote_user@$remote_host
 }
 
-# Main script execution
-perform_port_forwarding
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -c) shift; check=true ;;
+        -arg2) shift; arg2="$1" ;;
+        -arg3) shift; arg3="$1" ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+if [ -z "$check" ] && [ -z "$arg2" ] && [ -z "$arg3" ]; then
+    # echo "No arguments provided."
+    # Main script execution
+    perform_port_forwarding
+elif [ "$check" = true ]; then
+    echo "Check ssh port forward status."
+    ps aux | grep 'ssh.*-R\|ssh.*-L\|ssh.*-fN'
+else
+    echo "arg2: $arg2"
+    echo "arg3: $arg3"
+fi
+
 
 
