@@ -19,10 +19,18 @@ if [[ "$confirm" == Y  || -z $confirm ]]; then
     # Commit changes
     git commit -m "$commit_msg"
 
-    # Push changes
-    git push origin main
+    read -p "Do you want to push all commits (Y/n/g)? " push
 
-    echo "Changes added, committed, and pushed successfully!"
+    if [[ "$push" == Y ]]; then
+        # Push changes
+        git push origin main
+        echo "Changes added, committed, and pushed successfully!"
+    elif [[ "$push" == g ]]; then
+        git push gitlab
+        echo "Changes added, committed, and pushed to gitlab successfully!"
+    else
+        echo "Changes added, committed, but not push."
+    fi
 else
     echo "Changes not added."
 fi
