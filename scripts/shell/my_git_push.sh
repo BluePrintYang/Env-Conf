@@ -3,6 +3,13 @@
 # Change directory to your Git repository's root folder
 cd $(git rev-parse --show-toplevel)
 
+# Check if there are changes using git status
+if ! git status --porcelain | grep -q .
+then
+    echo "No changes to commit."
+    exit 0
+fi
+
 # Display changes using git status
 git status
 
@@ -28,6 +35,7 @@ if [[ "$confirm" == Y  || -z $confirm ]]; then
     elif [[ "$push" == g ]]; then
         git push gitlab
         echo "Changes added, committed, and pushed to gitlab successfully!"
+        curl http://tinmrn-nuc:5000/evil/remote/pull
     else
         echo "Changes added, committed, but not push."
     fi
